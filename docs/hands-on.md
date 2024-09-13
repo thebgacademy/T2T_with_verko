@@ -102,7 +102,13 @@ haplotype2_from_utig4-2 utig4-2+,utig4-9-,utig4-6-,utig4-3-,utig4-5+,utig4-8+   
 </details>
 
 #### A few helper scripts:
-There are common things we do with verkko assemblies, such as alignment to a reference (if one exists) and looking for T2T contigs/scaffolds (telomeres on both end and a gap or no gaps). These scripts are available at the [MARBL training GitHub](https://github.com/marbl/training/tree/main/part2-assemble/docker/marbl_utils) and are also conveniently included in our GitPod. Let's run them:
+There are common things we do with verkko assemblies, such as alignment to a reference (if one exists) and looking for T2T contigs/scaffolds (telomeres on both end and a gap or no gaps). These scripts are available at the [MarBL training GitHub](https://github.com/marbl/training/tree/main/part2-assemble/docker/marbl_utils) and are also conveniently included in our GitPod. Let's run them:
 ```bash
-bash 
+cd test
+# this just requires an assembly fasta file and generates assembly.t2t_ctgs, assembly.t2t_scfs, assembly.telomere.bed, assembly.gaps.bed
+bash /workspace/marbl_utils/asm_validation/getT2T.sh assembly.fasta
+
+# this take a reference which will be HPC-compressed if there isn't an HPC version already, an identity (default 99), and the assembly to align
+# it outputs assembly.mashmap.out, translation_hap1, translation_hap2, and assembly.homopolymer-compressed.chr.csv
+bash /workspace/marbl_utils/asm_validation/getChrNames.sh /workspace/chm13v2.0.fasta 99 assembly.fasta
 ```
