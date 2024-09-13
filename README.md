@@ -7,15 +7,24 @@ This session is part of [**Biodiversity Genomics Academy 2024**](https://thebgac
 [YouTube Recording](https://www.youtube.com/@thebiodiversitygenomicsacademy) <-- To be updated after BGA24
 
 ## Session Leader(s)
-Dr. Sergey Koren - Associate investigator in the Genome Informatics Section, Computational and Statistical Genomics Branch at the National Human Genome Research Institute.
+
+[Sergey Koren](https://genomeinformatics.github.io/people/koren/)
+Associate Investigator, Genome Informatics Section, National Human Genome Research Institute, National Institutes of Health
 
 ## Description
 
-Learn how to run verkko assembler as well as going over the different outputs and common things to check an assembly for first.
+Introduction to genome assembly with verkko. By the end of this session you will be able to:
+ - Understand how verkko performs genome assembly.
+ - Assemble a dataset with verkko.
+ - Understand what the expected outputs are and where to look for them.
+ - Understand how to inspect resulting assemblies and assembly graph and move between them.
+ - Get familiar with troubleshooting and other common pitfalls.
 
 ## Prerequisites
 
 1. Understanding of linux command line basics
+2. Installed [BandageNG](https://github.com/asl/BandageNG/releases/tag/continuous) (available for OSX, Windows, Linux).
+3. Understanding of genome-related terminology (N50, contig, scaffold, phasing).
 
 >[!warning] "Please make sure you MEET THE PREREQUISITES and READ THE DESCRIPTION above"
 >
@@ -24,7 +33,3 @@ Learn how to run verkko assembler as well as going over the different outputs an
 >    Please also read the description carefully to see if this session is relevant to you.
 >    
 >    If you don't meet the prerequisites or change your mind based on the description or are no longer available at the session time, please email damon at thebgacademy.org to cancel your slot so that someone else on the waitlist might attend.
-
-
-## Instructions
-For Session Leader
