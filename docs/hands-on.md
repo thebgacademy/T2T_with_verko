@@ -31,10 +31,10 @@ Verkko will take arbitary lists of inputs for each parameter so wildcards are ok
 
 Now, let's run it for real (it will take 10-15 min)
 ```bash
- verkko -d asm --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz
+ verkko -d asm --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction
 ```
 
-While waiting, we can go through presentation explaining how verkko works and motivation behind the steps.
+<b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through presentation explaining how verkko works and motivation behind the steps.
 
 ### Let’s take a look at the outputs
 ```bash
@@ -90,7 +90,7 @@ grep haplotype1_from_utig4-10 test/assembly.paths.tsv
 
 haplotype1_from_utig4-10        utig4-8-,utig4-4-,utig4-3+,utig4-7+,utig4-9+,utig4-10+  HAPLOTYPE1
 ```
-<details><summary>Verkko assembly graph</summary>
-![Verkko Bandage Graph](graph.jpg)
-The two paths each use either the red (haplotype 1) or the blue (haplotype2) node. The other large gray nodes are homozygous (node the higher coverage relative to red/blue). The small bubbles (e.g. <code>utig4-[45]</code>) have no signal but are short so they are randomly assigned a haplotype.
+<details><summary><b>Verkko assembly graph</b></summary>
+<img src="graph.jpg" alt="verkko bandage graph" /><br>
+<figcaption><em>The two paths each use either the red (haplotype 1) or the blue (haplotype2) node. The other large gray nodes are homozygous (node the higher coverage relative to red/blue). The small bubbles (e.g. <code>utig4-[45]</code>) have no signal but are short so they are randomly assigned a haplotype.</em></figcaption>
 </details>
