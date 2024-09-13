@@ -3,13 +3,17 @@ image: gitpod/workspace-full-vnc
 tasks:
 - name: SETUP - MAMBA ENVIRONMENT
   init: |
-    cd /workspace
     wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
     bash Mambaforge-$(uname)-$(uname -m).sh -b -p /workspace/mambaforge && rm Mambaforge-$(uname)-$(uname -m).sh
 
     /workspace/mambaforge/bin/mamba init bash
     source ${HOME}/.bashrc
     mamba create -n verkko -c conda-forge -c bioconda -c defaults verkko -y
+
+    cd /workspace
+    curl -L https://obj.umiacs.umd.edu/training/bga2024_verkko_t2t_data.tar.gz | tar xzf -
+    git clone https://github.com/marbl/training.git
+    mv training/part2-assemble/docker/marbl_utils /workspace/marbl_utils
 
 command: |
     /workspace/conda/bin/mamba init bash
