@@ -90,5 +90,7 @@ grep haplotype1_from_utig4-10 test/assembly.paths.tsv
 
 haplotype1_from_utig4-10        utig4-8-,utig4-4-,utig4-3+,utig4-7+,utig4-9+,utig4-10+  HAPLOTYPE1
 ```
-
-#### Looking at the graph
+<details><summary>Verkko assembly graph</summary>
+![Verkko Bandage Graph](graph.jpg)
+The two paths each use either the red (haplotype 1) or the blue (haplotype2) node. The other large gray nodes are homozygous (node the higher coverage relative to red/blue). The small bubbles (e.g. <code>utig4-[45]</code>) have no signal but are short so they are randomly assigned a haplotype.
+</details>
