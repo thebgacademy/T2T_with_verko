@@ -22,7 +22,7 @@ verkko --help
 ```
 now let's give it some data and see what it will do
 ```bash
- verkko -d asm --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --snakeopts --dry-run|more
+ verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --snakeopts --dry-run|more
 ```
 
 <details><summary><b>What if I have multiple input files?</b></summary>
@@ -31,7 +31,7 @@ Verkko will take arbitary lists of inputs for each parameter so wildcards are ok
 
 Now, let's run it for real (it will take 10-15 min)
 ```bash
- verkko -d asm --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction
+ verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction
 ```
 
 <b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through presentation explaining how verkko works and motivation behind the steps.
@@ -65,8 +65,14 @@ ls -h test/
 
 Let's look at these in detail:
 ```bash
-cat test/assembly.scfmap
+seqtk comp test/assembly.fasta 
+haplotype1-0000001      4108446 1137367 923158  912595  1135326 0       0       0       93992   0     00
+haplotype2-0000002      4106285 1134608 912192  922701  1136784 0       0       0       93936   0     00
+```
 
+We have two assembled sequences, of approximately 4.1 Mbp for each haplotype. Let's translate them to the graph:
+```bash
+cat test/assembly.scfmap
 path haplotype1-0000001 haplotype1_from_utig4-10
 piece000001
 end
@@ -78,19 +84,25 @@ piece000003
 end
 ```
 
-We want to find out the path for `haplotype2-0000002` so we will search for `haplotype2_from_utig4-2` in the `assembly.paths.tsv`:
-```bash
-grep haplotype2_from_utig4-2 test/assembly.paths.tsv
-
-haplotype2_from_utig4-2 utig4-2+,utig4-9-,utig4-6-,utig4-3-,utig4-5+,utig4-8+   HAPLOTYPE2
-```
-and we can also check `haplotype1_from_utig4-10`
+We want to find out the path for `haplotype1-0000001` so we will search for `haplotype1_from_utig4-10` in the `assembly.paths.tsv`:
 ```bash
 grep haplotype1_from_utig4-10 test/assembly.paths.tsv 
 
 haplotype1_from_utig4-10        utig4-8-,utig4-4-,utig4-3+,utig4-7+,utig4-9+,utig4-10+  HAPLOTYPE1
 ```
+and we can also check `haplotype2_from_utig4-2`
+```bash
+grep haplotype2_from_utig4-2 test/assembly.paths.tsv
+
+haplotype2_from_utig4-2 utig4-2+,utig4-9-,utig4-6-,utig4-3-,utig4-5+,utig4-8+   HAPLOTYPE2
+```
 <details><summary><b>Verkko assembly graph</b></summary>
 <img src="graph.jpg" alt="verkko bandage graph" /><br>
 <figcaption><em>The two paths each use either the red (haplotype 1) or the blue (haplotype2) node. The other large gray nodes are homozygous (node the higher coverage relative to red/blue). The small bubbles (e.g. <code>utig4-[45]</code>) have no signal but are short so they are randomly assigned a haplotype.</em></figcaption>
 </details>
+
+#### A few helper scripts:
+There are common things we do with verkko assemblies, such as alignment to a reference (if one exists) and looking for T2T contigs/scaffolds (telomeres on both end and a gap or no gaps). These scripts are available at the [MARBL training GitHub](https://github.com/marbl/training/tree/main/part2-assemble/docker/marbl_utils) and are also conveniently included in our GitPod. Let's run them:
+```bash
+bash 
+```
