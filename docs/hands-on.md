@@ -87,13 +87,11 @@ end
 We want to find out the path for `haplotype1-0000001` so we will search for `haplotype1_from_utig4-10` in the `assembly.paths.tsv`:
 ```bash
 grep haplotype1_from_utig4-10 test/assembly.paths.tsv 
-
 haplotype1_from_utig4-10        utig4-8-,utig4-4-,utig4-3+,utig4-7+,utig4-9+,utig4-10+  HAPLOTYPE1
 ```
 and we can also check `haplotype2_from_utig4-2`
 ```bash
 grep haplotype2_from_utig4-2 test/assembly.paths.tsv
-
 haplotype2_from_utig4-2 utig4-2+,utig4-9-,utig4-6-,utig4-3-,utig4-5+,utig4-8+   HAPLOTYPE2
 ```
 <details><summary><b>Verkko assembly graph</b></summary>
