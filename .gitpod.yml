@@ -13,12 +13,13 @@ tasks:
     cd /workspace
     curl -L https://obj.umiacs.umd.edu/training/bga2024_verkko_t2t_data.tar.gz | tar xzf -
     git clone https://github.com/marbl/training.git
-    mv training/part2-assemble/docker/marbl_utils /workspace/marbl_utils
+    mv training/part2-assemble/docker/marbl_utils /workspace/marbl_utils && rm -rf ./training
 
     /workspace/conda/bin/mamba init bash
     source ${HOME}/.bashrc
     mamba activate verkko
-
+    export PATH=/workspace/mambaforge/envs/verkko/bin/:$PATH
+    
     cd /workspace
     clear
 
