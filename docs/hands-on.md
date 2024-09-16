@@ -134,29 +134,28 @@ cd ..
 <img src="graph_tel.jpg" alt="verkko bandage graph" /><br>Same region as above but now we have added telomeric nodes to the graph (indicated in thick green). We also have labeled the nodes by their chromosome assignment based on thereference. This region is apparently from one end of Chr 12.</em></figcaption>
 </details>
 
-#### Editing an assembly
+#### Editing an assembly (time-permitting)
 Lastly, let's say we decide the phasing is incorrect and we think utig4-4 should be in haplotype2 not 1 like it is now. We can edit the paths file:
 ```bash
 cp test/8-hicPipeline/rukki.paths.gaf ./updated.gaf
 vi updated.gaf
 ```
 <details><summary><b>edited paths</b></summary>
-<code>
+<pre><code>
 name    path    assignment
-haplotype1_from_utig4-0 <utig4-1>utig4-0        HAPLOTYPE1
-haplotype2_from_utig4-3 <utig4-2>utig4-3>utig4-4        HAPLOTYPE2
+haplotype1_from_utig4-0 &ltutig4-1>utig4-0        HAPLOTYPE1
+haplotype2_from_utig4-3 &ltutig4-2>utig4-3>utig4-4        HAPLOTYPE2
 na_unused_utig4-6       >utig4-6        NA
 na_unused_utig4-7       >utig4-7        NA
 na_unused_utig4-8       >utig4-8        NA
 haplotype1_from_utig4-5 >utig4-5        HAPLOTYPE1
-</code>
+</code></pre>
 </details>
 
  Now that we have updated the paths, we can ask verkko to give us new consensus for these:
 ```bash
-verkko -d cns --hifi chr12/hifi.fasta.gz --nano chr12/ont.fasta.gz --hic1 chr12/hic.R1.fastq.gz --hic2 chr12/hic.R2.fastq.gz --local --paths updated.gaf --assembly test
+verkko -d cns --hifi chr12/hifi.fasta.gz --nano chr12/ont.fasta.gz --hic1 chr12/hic.R1.fastq.gz --hic2 chr12/hic.R2.fastq.gz --local --paths updated.gaf --assembly test > test.out 2>&1
 seqtk comp cns/assembly.fasta
-
 haplotype1-0000001      3713519 946361  931851  903311  931996  0       0       0       156668  0       0       0
 haplotype1-0000002      309933  87492   64610   67299   90532   0       0       0       7642    0       0       0
 haplotype2-0000003      3995292 1028429 984872  966206  1015785 0       0       0       162910  0       0       0
