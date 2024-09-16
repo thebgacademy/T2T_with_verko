@@ -68,8 +68,6 @@ ls -h test/
 <b>Let's look at these in detail:</b>
 ```bash
 seqtk comp test/assembly.fasta 
-haplotype1-0000001      3991700 1014615 964383  984883  1027819 0       0       0       162902  0       0       0
-haplotype2-0000002      4013528 1020107 969310  993111  1031000 0       0       0       163738  0       0       0
 ```
 
 We have two assembled sequences, of approximately 4 Mbp for each haplotype. Let's translate them to the graph:
@@ -86,12 +84,10 @@ end
 We want to find out the path for `haplotype1-0000001` so we will search for `haplotype1_from_utig4-0` in the `assembly.paths.tsv`:
 ```bash
 grep -w haplotype1_from_utig4-0 test/assembly.paths.tsv 
-haplotype1_from_utig4-0 utig4-2-,utig4-0+,utig4-5+      HAPLOTYPE1
 ```
 and we can also check `haplotype2_from_utig4-3`
 ```bash
 grep -w haplotype2_from_utig4-3 test/assembly.paths.tsv
-haplotype2_from_utig4-3 utig4-1-,utig4-3+,utig4-4+      HAPLOTYPE2
 ```
 Now we can run bandage and take a look at this graph:
 ```bash
@@ -99,6 +95,7 @@ Now we can run bandage and take a look at this graph:
 ```
 
 <details><summary><b>Verkko assembly graph</b></summary>
+<b>Note: the exact node names may change as parts of verkko are non-deterministic on re-runs but they actual sequences are the same</b>
 <img src="graph.png" alt="verkko bandage graph" /><br>
 <figcaption><em>The two paths each use either the red (haplotype 1) or the blue (haplotype2) node. The other large gray nodes are ambiguous and can be randomly assigned a haplotype. Homozygous nodes would also be gray but would have higher coverage, approximately 2x, relative to red/blue).</em></figcaption>
 </details>
@@ -110,8 +107,6 @@ cd test
 # this just requires an assembly fasta file and generates assembly.t2t_ctgs, assembly.t2t_scfs, assembly.telomere.bed, assembly.gaps.bed
 bash /workspace/marbl_utils/asm_evaluation/getT2T.sh assembly.fasta
 cat assembly.telomere.bed 
-haplotype1-0000001      0       3843    3991700
-haplotype2-0000002      0       7421    4013528
 ```
 We have telomeres on the ends of both paths, this means utig4-[12] have telomeres but we don't have to parse that, we can add them to the graph automatically:
 ```bash
@@ -123,49 +118,27 @@ We can also assign the nodes to chromosomes if we have a previous reference avai
 # this take a reference which will be HPC-compressed if there isn't an HPC version already, an identity (default 99), and the assembly to align
 # it outputs assembly.mashmap.out, translation_hap1, translation_hap2, and assembly.homopolymer-compressed.chr.csv
 bash /workspace/marbl_utils/asm_evaluation/getChrNames.sh /workspace/reference.fasta 99 assembly.fasta
-
 cat translation_hap[12]
-haplotype1-0000001      chr12   4013576 133324548
-haplotype2-0000002      chr12   3991666 133324548
-
 cat assembly.mashmap.out
-haplotype1-0000001      3991700 0       3991700 -       chr12   133324548       129324978       133324073       19      3999095 29      id:f:0.998589   kc:f:1.02096
-haplotype1-0000001      3991700 1970000 1980000 +       chr12   133324548       131695028       131705028       19      10000   29      id:f:0.998634   kc:f:0.831201
-haplotype2-0000002      4013528 0       300000  -       chr12   133324548       133029630       133322607       20      300000  28      id:f:0.998245   kc:f:1.02328
-haplotype2-0000002      4013528 300000  2640000 -       chr12   133324548       130683608       133005034       19      2340000 27      id:f:0.998004   kc:f:1.00932
-haplotype2-0000002      4013528 2650000 4013528 -       chr12   133324548       129319114       130684056       19      1364942 28      id:f:0.998291   kc:f:1.02804
 cd ..
 ```
 
 <details><summary><b>Verkko assembly graph with telomeres and chr names</b></summary>
+ <b>Note: the exact node names may change as parts of verkko are non-deterministic on re-runs but they actual sequences are the same</b>
 <img src="graph_tel.png" alt="verkko bandage graph" /><br>Same region as above but now we have added telomeric nodes to the graph (indicated in thick green). We also have labeled the nodes by their chromosome assignment based on thereference. This region is apparently from one end of Chr 12.</em></figcaption>
 </details>
 
 #### Editing an assembly (time-permitting)
-Lastly, let's say we decide the phasing is incorrect and we think utig4-1 should be in haplotype1 not haplotype2 like it is now. We can edit the paths file:
+Lastly, let's say we decide the phasing is incorrect and we think the gray nodes should be swapped. We can edit the paths file:
 ```bash
 cp test/8-hicPipeline/rukki.paths.gaf ./updated.gaf
 vi updated.gaf
 ```
-<details><summary><b>edited paths</b></summary>
-<pre><code>
-name    path    assignment
-haplotype1_from_utig4-0    &ltutig4-1>utig4-0>utig4-5    HAPLOTYPE1
-haplotype2_from_utig4-3    utig4-3>utig4-4    HAPLOTYPE2
-na_unused_utig4-6    >utig4-6    NA
-na_unused_utig4-7   >utig4-7    NA
-na_unused_utig4-8   >utig4-8    NA
-haplotype2_from_utig4-2    >utig4-2    HAPLOTYPE2
-</code></pre>
-</details>
 
  Now that we have updated the paths, we can ask verkko to give us new consensus for these:
 ```bash
-verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --local --paths updated.gaf --assembly test > test.out 2>&1
+verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --local --paths updated.gaf --assembly test
 seqtk comp cns/assembly.fasta
-haplotype1-0000001      3995315 1015796 966194  984903  1028422 0       0       0       162910  0       0       0
-haplotype2-0000002      309933  87492   64610   67299   90532   0       0       0       7642    0       0       0
-haplotype2-0000003      804143  221433  171960  175834  234916  0       0       0       19886   0       0       0
 ```
 
 There's lots more to learn about editing/finishing an assembly, including resolving remaining tangles, filling gaps, patching with other assemblies, validation, and QC. If you're interested in learning more, start by taking a look at the [MarBL training GitHub](https://github.com/marbl/training).
