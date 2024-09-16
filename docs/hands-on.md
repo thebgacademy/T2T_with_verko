@@ -84,12 +84,12 @@ end
 We want to find out the path for `haplotype1-0000001` so we will search for `haplotype1_from_utig4-0` in the `assembly.paths.tsv`:
 ```bash
 grep -w haplotype1_from_utig4-0 test/assembly.paths.tsv 
-haplotype1_from_utig4-0 utig4-1-,utig4-0+,utig4-4+      HAPLOTYPE1
+haplotype1_from_utig4-0 utig4-2-,utig4-0+,utig4-5+      HAPLOTYPE1
 ```
 and we can also check `haplotype2_from_utig4-3`
 ```bash
 grep -w haplotype2_from_utig4-3 test/assembly.paths.tsv
-haplotype2_from_utig4-3 utig4-2-,utig4-3+,utig4-5+      HAPLOTYPE2
+haplotype2_from_utig4-3 utig4-1-,utig4-3+,utig4-4+      HAPLOTYPE2
 ```
 <details><summary><b>Verkko assembly graph</b></summary>
 <img src="graph.jpg" alt="verkko bandage graph" /><br>
@@ -158,7 +158,7 @@ haplotype1_from_utig4-5    >utig4-5    HAPLOTYPE1
 
  Now that we have updated the paths, we can ask verkko to give us new consensus for these:
 ```bash
-verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --local --paths updated.gaf --assembly test > test.out 2>&1
+verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --local --paths updated.gaf --assembly test > test.out 2>&1
 seqtk comp cns/assembly.fasta
 haplotype1-0000001      3713519 946361  931851  903311  931996  0       0       0       156668  0       0       0
 haplotype1-0000002      309933  87492   64610   67299   90532   0       0       0       7642    0       0       0
