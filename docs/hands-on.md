@@ -99,7 +99,7 @@ Now we can run bandage and take a look at this graph:
 ```
 
 <details><summary><b>Verkko assembly graph</b></summary>
-<img src="graph.jpg" alt="verkko bandage graph" /><br>
+<img src="graph.png" alt="verkko bandage graph" /><br>
 <figcaption><em>The two paths each use either the red (haplotype 1) or the blue (haplotype2) node. The other large gray nodes are ambiguous and can be randomly assigned a haplotype. Homozygous nodes would also be gray but would have higher coverage, approximately 2x, relative to red/blue).</em></figcaption>
 </details>
 
@@ -146,7 +146,7 @@ cd ..
 ```
 
 <details><summary><b>Verkko assembly graph with telomeres and chr names</b></summary>
-<img src="graph_tel.jpg" alt="verkko bandage graph" /><br>Same region as above but now we have added telomeric nodes to the graph (indicated in thick green). We also have labeled the nodes by their chromosome assignment based on thereference. This region is apparently from one end of Chr 12.</em></figcaption>
+<img src="graph_tel.png" alt="verkko bandage graph" /><br>Same region as above but now we have added telomeric nodes to the graph (indicated in thick green). We also have labeled the nodes by their chromosome assignment based on thereference. This region is apparently from one end of Chr 12.</em></figcaption>
 </details>
 
 #### Editing an assembly (time-permitting)
