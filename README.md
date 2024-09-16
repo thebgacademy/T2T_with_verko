@@ -23,8 +23,7 @@ Introduction to genome assembly with verkko. By the end of this session you will
 ## Prerequisites
 
 1. Understanding of linux command line basics
-2. Installed [BandageNG](https://github.com/asl/BandageNG/releases/tag/continuous) (available for OSX, Windows, Linux).
-3. Understanding of genome-related terminology (N50, contig, scaffold, phasing).
+2. Understanding of genome-related terminology (N50, contig, scaffold, phasing).
 
 >[!warning] "Please make sure you MEET THE PREREQUISITES and READ THE DESCRIPTION above"
 >
