@@ -63,7 +63,7 @@ ls -h test/
 <dd>Translation between the path name and the graph nodes making them up</dd>
 </dl>
 
-Let's look at these in detail:
+<b>Let's look at these in detail:</b>
 ```bash
 seqtk comp test/assembly.fasta 
 haplotype1-0000001      4013576 1031011 993122  969324  1020119 0       0       0       163738  0       0       0
@@ -112,7 +112,7 @@ We have telomeres on the ends of both paths, this means utig4-[45] have telomere
 /workspace/??/remove_nodes_add_telomere.py --telo assembly.telomere.bed 
 ```
 
-We can also assign chromosomes to the nodes if we have a previous reference available.
+We can also assign the nodes to chromosomes if we have a previous reference available.
 ```bash
 # this take a reference which will be HPC-compressed if there isn't an HPC version already, an identity (default 99), and the assembly to align
 # it outputs assembly.mashmap.out, translation_hap1, translation_hap2, and assembly.homopolymer-compressed.chr.csv
@@ -127,9 +127,39 @@ haplotype1-0000001      4013576 0       2320000 +       chr12   133324548       
 haplotype1-0000001      4013576 2330000 3710000 +       chr12   133324548       131621174       133001134       20      1380000 28      id:f:0.99857    kc:f:1.23998
 haplotype1-0000001      4013576 3710000 4010000 +       chr12   133324548       133027651       133324459       19      300000  30      id:f:0.998912   kc:f:0.869261
 haplotype2-0000002      3991666 0       3990000 +       chr12   133324548       129324978       133323934       20      3998956 28      id:f:0.99856    kc:f:1.16405
+cd ..
 ```
 
-Let's see what the graph looks like after this update
 <details><summary><b>Verkko assembly graph with telomeres and chr names</b></summary>
 <img src="graph_tel.jpg" alt="verkko bandage graph" /><br>Same region as above but now we have added telomeric nodes to the graph (indicated in thick green). We also have labeled the nodes by their chromosome assignment based on thereference. This region is apparently from one end of Chr 12.</em></figcaption>
 </details>
+
+#### Editing an assembly
+Lastly, let's say we decide the phasing is incorrect and we think utig4-4 should be in haplotype2 not 1 like it is now. We can edit the paths file:
+```bash
+cp test/8-hicPipeline/rukki.paths.gaf ./updated.gaf
+vi updated.gaf
+```
+<details><summary><b>edited paths</b></summary>
+<code>
+name    path    assignment
+haplotype1_from_utig4-0 <utig4-1>utig4-0        HAPLOTYPE1
+haplotype2_from_utig4-3 <utig4-2>utig4-3>utig4-4        HAPLOTYPE2
+na_unused_utig4-6       >utig4-6        NA
+na_unused_utig4-7       >utig4-7        NA
+na_unused_utig4-8       >utig4-8        NA
+haplotype1_from_utig4-5 >utig4-5        HAPLOTYPE1
+</code>
+</details>
+
+ Now that we have updated the paths, we can ask verkko to give us new consensus for these:
+```bash
+verkko -d cns --hifi chr12/hifi.fasta.gz --nano chr12/ont.fasta.gz --hic1 chr12/hic.R1.fastq.gz --hic2 chr12/hic.R2.fastq.gz --local --paths updated.gaf --assembly test
+seqtk comp cns/assembly.fasta
+
+haplotype1-0000001      3713519 946361  931851  903311  931996  0       0       0       156668  0       0       0
+haplotype1-0000002      309933  87492   64610   67299   90532   0       0       0       7642    0       0       0
+haplotype2-0000003      3995292 1028429 984872  966206  1015785 0       0       0       162910  0       0       0
+```
+
+There's lots more to learn about editing/finishing an assembly, including resolving remaining tangles, filling gaps, and patching with other assemblies. If you're interested in that, start by taking a look at the [MarBL training GitHub](https://github.com/marbl/training).
