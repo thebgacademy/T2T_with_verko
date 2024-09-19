@@ -14,16 +14,15 @@ Associate Investigator, Genome Informatics Section, National Human Genome Resear
 ## Description
 
 Introduction to genome assembly with verkko. By the end of this session you will be able to:
- - Understand how verkko performs genome assembly.
- - Assemble a dataset with verkko.
- - Understand what the expected outputs are and where to look for them.
- - Understand how to inspect resulting assemblies and assembly graph and move between them.
- - Get familiar with troubleshooting and other common pitfalls.
+ - Understand verkko steps
+ - Run verkko
+ - Inspect logging output as it runs
+ - Get familiarized with assembly outputs
 
 ## Prerequisites
 
 1. Understanding of linux command line basics
-2. Understanding of genome-related terminology (N50, contig, scaffold, phasing).
+2. Understanding of assembly and genome-related terminology (N50, contig, scaffold, phasing, reads).
 
 >[!warning] "Please make sure you MEET THE PREREQUISITES and READ THE DESCRIPTION above"
 >
@@ -32,3 +31,9 @@ Introduction to genome assembly with verkko. By the end of this session you will
 >    Please also read the description carefully to see if this session is relevant to you.
 >    
 >    If you don't meet the prerequisites or change your mind based on the description or are no longer available at the session time, please email damon at thebgacademy.org to cancel your slot so that someone else on the waitlist might attend.
+
+## Instructions
+[Detailed tutorial steps](docs/hands-on.md)
+
+## Slides
+[Verkko introduction](docs/verkko.pptx)
