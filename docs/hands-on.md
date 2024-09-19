@@ -93,6 +93,8 @@ Now we can run bandage and take a look at this graph:
 ```bash
 ./BandageNG &
 ```
+> [!important]
+> Note that you must have pop-ups enabled in your browser as this opens the software in a new window
 
 <details><summary><b>Verkko assembly graph</b></summary>
 <b>Note: the exact node names may change as parts of verkko are non-deterministic on re-runs but they actual sequences are the same</b>
@@ -105,7 +107,7 @@ There are common things we do with verkko assemblies, such as alignment to a ref
 ```bash
 cd test
 # this just requires an assembly fasta file and generates assembly.t2t_ctgs, assembly.t2t_scfs, assembly.telomere.bed, assembly.gaps.bed
-bash /workspace/marbl_utils/asm_evaluation/getT2T.sh assembly.fasta
+bash /workspace/marbl_utils/asm_evaluation/getT2T.sh assembly.fasta > /dev/null 2>&1
 cat assembly.telomere.bed 
 ```
 We have telomeres on the ends of both paths, this means utig4-[12] have telomeres but we don't have to parse that, we can add them to the graph automatically:
@@ -117,7 +119,7 @@ We can also assign the nodes to chromosomes if we have a previous reference avai
 ```bash
 # this take a reference which will be HPC-compressed if there isn't an HPC version already, an identity (default 99), and the assembly to align
 # it outputs assembly.mashmap.out, translation_hap1, translation_hap2, and assembly.homopolymer-compressed.chr.csv
-bash /workspace/marbl_utils/asm_evaluation/getChrNames.sh /workspace/reference.fasta 99 assembly.fasta
+bash /workspace/marbl_utils/asm_evaluation/getChrNames.sh /workspace/reference.fasta 99 assembly.fasta > /dev/null 2>&1
 cat translation_hap[12]
 cat assembly.mashmap.out
 cd ..
@@ -129,13 +131,13 @@ cd ..
 </details>
 
 #### Editing an assembly (time-permitting)
-Lastly, let's say we decide the phasing is incorrect and we think the gray nodes should be swapped. We can edit the paths file:
+Lastly, let's say we decide the phasing is incorrect and we want to re-assign one of the gray nodes. We can edit the paths file:
 ```bash
 cp test/8-hicPipeline/rukki.paths.gaf ./updated.gaf
 vi updated.gaf
 ```
 
- Now that we have updated the paths, we can ask verkko to give us new consensus for these:
+Now that we have updated the paths, we can ask verkko to give us new consensus for these:
 ```bash
 verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --local --paths updated.gaf --assembly test
 seqtk comp cns/assembly.fasta
