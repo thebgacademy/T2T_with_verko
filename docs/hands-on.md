@@ -96,6 +96,8 @@ Now we can run bandage and take a look at this graph:
 > [!important]
 > Note that you must have pop-ups enabled in your browser as this opens the software in a new window
 
+<b>Note: for more details on Bandage-NG, see the [BGA Tutorial](https://github.com/thebgacademy/Bandage-NG)</b>
+
 <details><summary><b>Verkko assembly graph</b></summary>
 <b>Note: the exact node names may change as parts of verkko are non-deterministic on re-runs but they actual sequences are the same</b>
 <img src="graph.png" alt="verkko bandage graph" /><br>
