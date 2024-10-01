@@ -34,7 +34,7 @@ Now, let's run it for real (it will take 10-15 min)
  verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction --screen human
 ```
 
-<b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through the [presentation](verkko.pptx) explaining how verkko works, motivation behind the steps, and some things that can go wrong.
+<b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through the [presentation](verkko.pdf) explaining how verkko works, motivation behind the steps, and some things that can go wrong.
 
 ### Let’s take a look at the outputs
 ```bash
