@@ -19,10 +19,10 @@ tasks:
     git clone https://github.com/marbl/training.git
     mv training/part2-assemble/docker/marbl_utils /workspace/marbl_utils && rm -rf ./training
     
-    # get bandageNG
-    wget https://github.com/asl/BandageNG/releases/download/continuous/BandageNG-Linux-ec14f6d.AppImage
-    mv BandageNG-Linux-ec14f6d.AppImage BandageNG
-    chmod u+x BandageNG
+    # get bandageNG, there has to be an easier way?
+    # first we get the hex ID of the latest continuous build
+    name=`curl -s -H "Accept: application/vnd.github+json" "$(curl -s "https://api.github.com/repos/asl/BandageNG/actions/runs?event=push&status=success" | jq -r '.workflow_runs[0].artifacts_url')" 2>&1 |grep head_sha|awk '{print substr($2, 2, 7)}'|sort|uniq |tail -n 1`
+    wget https://github.com/asl/BandageNG/releases/download/continuous/BandageNG-Linux-$name.AppImage -O BandageNG
     
     /workspace/conda/bin/mamba init bash
     source ${HOME}/.bashrc
