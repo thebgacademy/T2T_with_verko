@@ -35,7 +35,7 @@ Now, let's run it for real (it will take 10-15 min)
  verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction --screen-human-contaminants
 ```
 
-<b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through the [presentation](verkko.pdf) explaining how verkko works, motivation behind the steps, and some things that can go wrong.
+<b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through the [presentation](verkko.pdf) explaining how verkko works and the motivation behind the steps. I recommend stopping at slide 20, "Genome graphs are our friends" and looking at the remaining examples of some things that can go wrong after going through the rest of the command-line tutorial.
 
 ### Let’s take a look at the outputs
 ```bash
@@ -50,6 +50,31 @@ ls -h test/
 6-layoutContigs  assembly.homopolymer-compressed.layout
 7-consensus      assembly.homopolymer-compressed.noseq.gfa
 ```
+
+<details><summary><b>Description of the output folders.</b></summary>
+ 
+ #### The folder names are ordered and roughly follow the outline in slide 14. 
+  - Step 0 is the correction of your input high-accuracy reads (typically HiFi, ONT Duplex, or ONT Simplex Dorado Corrected reads or any mix of those types).
+     - From this point on everything in the assembly is homopolymer compressed (HPC)
+  - Step 1 is the construction of the [MBG](https://github.com/maickrau/MBG) graph using the corrected data.
+  - Step 2 simplifies the graph constructed above.
+     - Up to this point we've only use the high-accuracy data
+     - You can look at the unitig-unrolled-hifi-resolved.gfa file to see what the high-accuracy only graph looks like.
+  - Step 3 now we start including the --nano inputs (typcially ONT Simplex Ultra-long (UL) reads) and align all the reads to the graph with two aligners
+     - 3-align uses [GraphAligner](https://github.com/maickrau/GraphAligner)
+     - 3-alignTips uses [Winnowmap](https://github.com/marbl/Winnowmap) for a subset of gap-patching reads
+  - Step 4 uses the information in the --nano inputs to further simplify and resolve the graph and fill any gaps in sequence in the initial graph
+     - You can look at the unitig-unrolled-ont-resolved.gfa file to see what the high-accuracy + nano graph looks like.
+  - Step 5 further simplifies the graph, removing simple bubbles, unrolling loops with clear copy-count from their coverage, and clips tip (aka dead-end) nodes.
+     - This is the final verkko graph, no further simplifications are made. Subsequent steps provide paths in [GAF](https://github.com/lh3/gfatools/blob/master/doc/rGFA.md) format through this graph (see examples later in this tutorial).
+  - Step 6 and 7 is where we switch from HPC back to regular space
+     - Note, if you run with trio, you'll also have 6-rukki. This step uses parental information to generate phased paths through the graph built in 5-untip.
+     - Step 6 assigns the reads using the initial graph in step 1 + read alignments in step 3 to each assembly contig
+     - Step 7 generates a consensus using majority vote for each assembly contig from the assigned reads
+ - Step 8 only if you provided Hi-C or PoreC uses this long-range contact information to generate phased paths through the graph built in 5-untip.
+    - This data can also be used to scaffold across large repeats like rDNA arrays in human genomes or across regions of the genome without coverage.  
+</details>
+ 
 #### Some of the important outputs:
 <dl>
 <dt>assembly.fasta</dt>
