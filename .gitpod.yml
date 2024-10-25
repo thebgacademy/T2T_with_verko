@@ -23,6 +23,7 @@ tasks:
     # first we get the hex ID of the latest continuous build
     name=`curl -s -H "Accept: application/vnd.github+json" "$(curl -s "https://api.github.com/repos/asl/BandageNG/actions/runs?event=push&status=success" | jq -r '.workflow_runs[0].artifacts_url')" 2>&1 |grep head_sha|awk '{print substr($2, 2, 7)}'|sort|uniq |tail -n 1`
     wget https://github.com/asl/BandageNG/releases/download/continuous/BandageNG-Linux-$name.AppImage -O BandageNG
+    chmod u+x ./BandageNG
     
     /workspace/conda/bin/mamba init bash
     source ${HOME}/.bashrc
