@@ -10,7 +10,7 @@ tasks:
 
     /workspace/mambaforge/bin/mamba init bash
     source ${HOME}/.bashrc
-    mamba create -n verkko -c conda-forge -c bioconda -c defaults verkko bc bedtools numpy scipy -y
+    mamba create -n verkko -c conda-forge -c bioconda -c defaults verkko bc bedtools blis -y
     sudo apt install -y fuse
 
     cd /workspace
