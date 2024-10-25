@@ -18,11 +18,12 @@ Get a "Regular" instance: 4 cores, 8 G RAM, 30 GB Storage
 
 Let's try an assembly of some test data. First, let's get familiar with verkko syntax
 ```bash
+verkko --version
 verkko --help
 ```
 now let's give it some data and see what it will do
 ```bash
- verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --snakeopts --dry-run --screen human|more
+ verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --snakeopts --dry-run --screen-human-contaminants --local-memory 4 --local-cpus 4 | more
 ```
 
 <details><summary><b>What if I have multiple input files?</b></summary>
@@ -31,7 +32,7 @@ Verkko will take arbitary lists of inputs for each parameter so wildcards are ok
 
 Now, let's run it for real (it will take 10-15 min)
 ```bash
- verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction --screen human
+ verkko -d test --hifi hifi.fasta.gz --nano ont.fasta.gz --hic1 hic.R1.fastq.gz --hic2 hic.R2.fastq.gz --no-correction --screen-human-contaminants --local-memory 4 --local-cpus 4
 ```
 
 <b>Note: we would normally not use `--no-correction` but we want it to run faster for this tutorial.</b> While waiting, we can go through the [presentation](verkko.pdf) explaining how verkko works, motivation behind the steps, and some things that can go wrong.
@@ -141,7 +142,7 @@ vi updated.gaf
 
 Now that we have updated the paths, we can ask verkko to give us new consensus for these:
 ```bash
-verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --local --paths updated.gaf --assembly test
+verkko -d cns --hifi hifi.fasta.gz --nano ont.fasta.gz --local --paths updated.gaf --assembly test --local-memory 4 --local-cpus 4
 seqtk comp cns/assembly.fasta
 ```
 
