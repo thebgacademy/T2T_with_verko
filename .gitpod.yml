@@ -3,12 +3,14 @@ image: gitpod/workspace-full-vnc
 tasks:
 - name: SETUP - MAMBA ENVIRONMENT
   init: |
+    # first make sure we are using bash not dash
+    sudo ln -sf /bin/bash /bin/sh
     wget "https://github.com/conda-forge/miniforge/releases/download/24.3.0-0/Mambaforge-24.3.0-0-Linux-x86_64.sh"
     bash Mambaforge-24.3.0-0-Linux-x86_64.sh -b -p /workspace/mambaforge && rm Mambaforge-24.3.0-0-Linux-x86_64.sh
 
     /workspace/mambaforge/bin/mamba init bash
     source ${HOME}/.bashrc
-    mamba create -n verkko -c conda-forge -c bioconda -c defaults verkko bedtools -y
+    mamba create -n verkko -c conda-forge -c bioconda -c defaults verkko=2.2 bedtools -y
     sudo apt install -y fuse
 
     cd /workspace
@@ -18,8 +20,8 @@ tasks:
     mv training/part2-assemble/docker/marbl_utils /workspace/marbl_utils && rm -rf ./training
     
     # get bandageNG
-    wget https://github.com/asl/BandageNG/releases/download/continuous/BandageNG-Linux-8dd0544.AppImage
-    mv BandageNG-Linux-8dd0544.AppImage BandageNG
+    wget https://github.com/asl/BandageNG/releases/download/continuous/BandageNG-Linux-ec14f6d.AppImage
+    mv BandageNG-Linux-ec14f6d.AppImage BandageNG
     chmod u+x BandageNG
     
     /workspace/conda/bin/mamba init bash
